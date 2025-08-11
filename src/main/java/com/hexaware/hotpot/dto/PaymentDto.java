@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public class PaymentDto {
 	@NotNull
 	@Min(1)
-	private int paymentid;
+	private int paymentId;
 	@NotNull(message="Amount can't be null")
 	private double amount;
 	@NotEmpty(message="Payment mode must be specified")

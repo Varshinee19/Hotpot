@@ -9,8 +9,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class CartItemDto {
 	@NotNull
+	private int CartItemId;
+	@NotNull
+	private int cartId;
+	@NotNull
+	private int menuId;
+	@NotNull
 	@Min(value=1)
 	private int quantity;
-	
+	private int orderItemId;
 
 }

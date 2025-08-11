@@ -7,36 +7,36 @@ public class CartItems {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int cartitemid;
+	private int cartItemId;
 	private int quantity;
 	@ManyToOne
-	@JoinColumn(name="cartid")
+	@JoinColumn(name="cartId")
 	private Cart cart;
 	@ManyToOne
-	@JoinColumn(name="menuid")
+	@JoinColumn(name="menuId")
 	private Menu menu;
 	
 	public CartItems() {
 		
 	}
-	public CartItems(int cartitemid, int quantity) {
+	public CartItems(int cartItemId, int quantity) {
 		super();
-		this.cartitemid = cartitemid;
+		this.cartItemId = cartItemId;
 		this.quantity = quantity;
 	}
 
-	public CartItems(int cartitemid, int quantity, Cart cart, Menu menu) {
+	public CartItems(int cartItemId, int quantity, Cart cart, Menu menu) {
 		super();
-		this.cartitemid = cartitemid;
+		this.cartItemId = cartItemId;
 		this.quantity = quantity;
 		this.cart = cart;
 		this.menu = menu;
 	}
-	public int getCartitemid() {
-		return cartitemid;
+	public int getCartItemId() {
+		return cartItemId;
 	}
-	public void setCartitemid(int cartitemid) {
-		this.cartitemid = cartitemid;
+	public void setCartItemId(int cartItemId) {
+		this.cartItemId = cartItemId;
 	}
 	public int getQuantity() {
 		return quantity;

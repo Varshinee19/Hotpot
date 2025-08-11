@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.hexaware.hotpot.entities.Cart;
 @Repository
 public interface CartRepository extends JpaRepository<Cart,Integer> {
+	
+	Cart findByCustomerCustomerId(int customerId);
 
 }

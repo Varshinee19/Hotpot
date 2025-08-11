@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MenuDto {
+	private int menuId;
 	@NotEmpty(message="ItemName cannot be empty")
-	private String itemname;
+	private String itemName;
 	@NotBlank
 	private String description;
 	@NotNull(message="Price cannot be null")

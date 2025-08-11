@@ -1,9 +1,11 @@
 package com.hexaware.hotpot.entities;
 
-import java.util.*;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,59 +15,60 @@ import jakarta.persistence.OneToMany;
 public class Orders {
 
 	@Id
-	private int orderid;
-	private double totalprice;
-	private String deladdress;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int orderId;
+	private double totalPrice;
+	private String deliveryAddress;
 	private String status;
 	
 	@ManyToOne
-	@JoinColumn(name="custid")
+	@JoinColumn(name="customerId")
 	private Customer customer;
 	
 	@ManyToOne
-	@JoinColumn(name="resid")
+	@JoinColumn(name="restaurantId")
 	private Restaurant restaurant;
 	@OneToMany(mappedBy="order",cascade=CascadeType.ALL)
 	private List<OrderItems> orderItems;
 	public Orders() {
 		
 	}
-	public Orders(int orderid, double totalprice, String deladdress, String status) {
+	public Orders(int orderId, double totalPrice, String deliveryAddress, String status) {
 		super();
-		this.orderid = orderid;
-		this.totalprice = totalprice;
-		this.deladdress = deladdress;
+		this.orderId = orderId;
+		this.totalPrice = totalPrice;
+		this.deliveryAddress = deliveryAddress;
 		this.status = status;
 	}
-	public Orders(int orderid, double totalprice, String deladdress, String status, Customer customer,
+	public Orders(int orderId, double totalPrice, String deliveryAddress, String status, Customer customer,
 			Restaurant restaurant, List<OrderItems> orderItems) {
 		super();
-		this.orderid = orderid;
-		this.totalprice = totalprice;
-		this.deladdress = deladdress;
+		this.orderId = orderId;
+		this.totalPrice = totalPrice;
+		this.deliveryAddress = deliveryAddress;
 		this.status = status;
 		this.customer = customer;
 		this.restaurant = restaurant;
 		this.orderItems = orderItems;
 	}
 	
-	public int getOrderid() {
-		return orderid;
+	public int getOrderId() {
+		return orderId;
 	}
-	public void setOrderid(int orderid) {
-		this.orderid = orderid;
+	public void setOrderid(int orderId) {
+		this.orderId = orderId;
 	}
-	public double getTotalprice() {
-		return totalprice;
+	public double getTotalPrice() {
+		return totalPrice;
 	}
-	public void setTotalprice(double totalprice) {
-		this.totalprice = totalprice;
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
-	public String getDeladdress() {
-		return deladdress;
+	public String getDeliveryaddress() {
+		return deliveryAddress;
 	}
-	public void setDeladdress(String deladdress) {
-		this.deladdress = deladdress;
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
 	}
 	public String getStatus() {
 		return status;

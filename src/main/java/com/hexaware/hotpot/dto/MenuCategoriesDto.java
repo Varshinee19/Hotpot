@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MenuCategoriesDto {
+	private int categoryId;
 	@NotEmpty(message="category name must not be empty")
-	private String cname;
+	private String categoryName;
 
 }

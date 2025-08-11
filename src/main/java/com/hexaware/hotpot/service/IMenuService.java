@@ -1,15 +1,18 @@
 package com.hexaware.hotpot.service;
-import java.util.*;
+import java.util.List;
+
+import com.hexaware.hotpot.dto.MenuDto;
 import com.hexaware.hotpot.entities.Menu;
 
 public interface IMenuService {
 	
-	public Menu addMenuItem(Menu menu);
-	public Menu updateMenu(Menu menu);
-	public List<Menu> getMenuByRestaurant(int resid);
-	public List<Menu> getMenuByCategory(int catid);
+	public Menu addMenuItem(MenuDto menu);
+	public Menu updateMenu(Integer menuId,MenuDto menu);
+	public List<Menu> getMenuByRestaurant(int restaurantId);
+	public List<Menu> getMenuByCategory(int categoryId);
 	public List<Menu> getAllMenu();
-	public String deleteMenuItem(int menuid);
+	public Menu getById(int menuId);
+	public String deleteMenuItem(int menuId);
 	
 
 	

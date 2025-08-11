@@ -9,11 +9,12 @@ import com.hexaware.hotpot.exception.CustomerNotFoundException;
 public interface ICustomerService {
 	
 	public Customer addCustomer(CustomerDto customer);
-	public Customer UpdateCustomer(CustomerDto customer,int custid) throws CustomerNotFoundException;
+	public Customer updateCustomer(Integer customerId,CustomerDto customer) throws CustomerNotFoundException;
 	public Customer getCustomerByMail(String email);
-	public String deleteCustomerById(Integer custid);
+	public Customer getById(int customerId) throws CustomerNotFoundException;
+	public String deleteCustomerById(Integer customerId);
 	public List<Customer> getAllCustomer();
-	public List<Orders> getAllOrders();
+	public List<Orders> getAllOrders(int customerId);
 	
 	
 	

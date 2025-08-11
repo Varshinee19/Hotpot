@@ -15,10 +15,10 @@ public class Restaurant {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int resid;
-	private String rname;
-	private String raddress;
-	private String phoneno;
+	private int restaurantId;
+	private String restaurantName;
+	private String restaurantAddress;
+	private String phoneNo;
 	@OneToMany(mappedBy="restaurant", cascade=CascadeType.ALL)
 	private List<Menu> menuItems;
 	@OneToMany(mappedBy="restaurant",cascade=CascadeType.ALL)
@@ -27,47 +27,47 @@ public class Restaurant {
 	public Restaurant() {
 		
 	}
-	public Restaurant(int resid, String rname, String raddress, String phoneno) {
+	public Restaurant(int restaurantId, String restaurantName, String restaurantAddress, String phoneNo) {
 		super();
-		this.resid = resid;
-		this.rname = rname;
-		this.raddress = raddress;
-		this.phoneno = phoneno;
+		this.restaurantId = restaurantId;
+		this.restaurantName = restaurantName;
+		this.restaurantAddress = restaurantAddress;
+		this.phoneNo = phoneNo;
 	}
 
-	public Restaurant(int resid, String rname, String raddress, String phoneno, List<Menu> menuItems,
-			List<Orders> orders) {
+	public Restaurant(int restaurantId, String restaurantName, String restaurantAddress, String phoneNo,
+			List<Menu> menuItems, List<Orders> orders) {
 		super();
-		this.resid = resid;
-		this.rname = rname;
-		this.raddress = raddress;
-		this.phoneno = phoneno;
+		this.restaurantId = restaurantId;
+		this.restaurantName = restaurantName;
+		this.restaurantAddress = restaurantAddress;
+		this.phoneNo = phoneNo;
 		this.menuItems = menuItems;
 		this.orders = orders;
 	}
-	public int getResid() {
-		return resid;
+	public int getRestaurantId() {
+		return restaurantId;
 	}
-	public void setResid(int resid) {
-		this.resid = resid;
+	public void setRestaurantId(int restaurantId) {
+		this.restaurantId = restaurantId;
 	}
-	public String getRname() {
-		return rname;
+	public String getRestaurantName() {
+		return restaurantName;
 	}
-	public void setRname(String rname) {
-		this.rname = rname;
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
 	}
-	public String getRaddress() {
-		return raddress;
+	public String getRestaurantAddress() {
+		return restaurantAddress;
 	}
-	public void setRaddress(String raddress) {
-		this.raddress = raddress;
+	public void setRestaurantAddress(String restaurantAddress) {
+		this.restaurantAddress = restaurantAddress;
 	}
-	public String getPhoneno() {
-		return phoneno;
+	public String getPhoneNo() {
+		return phoneNo;
 	}
-	public void setPhoneno(String phoneno) {
-		this.phoneno = phoneno;
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 	public List<Menu> getMenuItems() {
 		return menuItems;
@@ -81,6 +81,8 @@ public class Restaurant {
 	public void setOrders(List<Orders> orders) {
 		this.orders = orders;
 	}
+
+	
 
 	
 	

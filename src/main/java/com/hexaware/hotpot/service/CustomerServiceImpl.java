@@ -11,28 +11,24 @@ import com.hexaware.hotpot.entities.Customer;
 import com.hexaware.hotpot.entities.Orders;
 import com.hexaware.hotpot.exception.CustomerNotFoundException;
 import com.hexaware.hotpot.repository.CustomerRepository;
+import com.hexaware.hotpot.repository.OrdersRepository;
 @Service
 public class CustomerServiceImpl implements ICustomerService {
 	@Autowired
 	CustomerRepository repo;
+	@Autowired
+	OrdersRepository orderRepo;
 	@Override
 	public Customer addCustomer(CustomerDto customer) {
 		Customer cust=readData(customer);
 		return repo.save(cust);
 		
 	}
-	@Override
-	public Customer UpdateCustomer(CustomerDto customer,int custid) throws CustomerNotFoundException {
-		Optional<Customer> optionalCust=repo.findById(custid);
-		if(!optionalCust.isPresent()) {
-			throw new CustomerNotFoundException("Customer not found");
-		}
+	
+	public Customer updateCustomer(Integer customerId,CustomerDto customer) throws CustomerNotFoundException {
+		Optional<Customer> optionalCust=repo.findById(customerId);
 		Customer cust=optionalCust.get();
-		cust.setName(customer.getName());
-		cust.setEmail(customer.getEmail());
-		cust.setAddress(customer.getAddress());
-		cust.setPhone(customer.getPhone());
-		cust.setRole(customer.getRole());
+		cust=readData(customer);
 		return repo.save(cust);
 		
 	}
@@ -48,8 +44,14 @@ public class CustomerServiceImpl implements ICustomerService {
 	
 	public Customer getCustomerByMail(String email) {
 		
-		return repo.getByEmail(email);
+		return repo.findByEmail(email);
 	}
+	@Override
+	public Customer getById(int customerId) throws CustomerNotFoundException {
+		
+		return repo.findById(customerId).orElseThrow(()->new CustomerNotFoundException("Not Found"));
+	}
+
 
 	
 	
@@ -59,9 +61,9 @@ public class CustomerServiceImpl implements ICustomerService {
 	}
 
 	
-	public List<Orders> getAllOrders() {
+	public List<Orders> getAllOrders(int customerId) {
 		
-		return null;
+		return orderRepo.findByCustomer(customerId);
 	}
 	public Customer readData(CustomerDto customer) {
 		Customer cust=new Customer();
@@ -72,6 +74,7 @@ public class CustomerServiceImpl implements ICustomerService {
 		cust.setRole(customer.getRole());
 		return cust;
 	}
+
 
 
 

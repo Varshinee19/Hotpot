@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class RestaurantDto {
+	private int restaurantId;
 	@NotBlank(message="Restaurant name cannot be left blank")
-	private String rname;
+	private String restaurantName;
 	@NotNull(message="Restaurant address is mandatory")
-	private String raddress;
+	private String restaurantAddress;
 	@NotNull
-	private String phoneno;
+	private String phoneNo;
 
 }

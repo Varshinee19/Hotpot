@@ -18,18 +18,18 @@ import jakarta.persistence.OneToMany;
 public class Menu {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int menuid;
-	private String itemname;
+	private int menuId;
+	private String itemName;
 	private String description;
 	private double price;
 	private String type;
 	private String image;
 	private String info;
 	@ManyToOne
-	@JoinColumn(name="catid")
+	@JoinColumn(name="categoryId")
 	private MenuCategories menuCategory;
 	@ManyToOne
-	@JoinColumn(name="restid")
+	@JoinColumn(name="restaurantId")
 	private Restaurant restaurant;
 	@OneToMany(mappedBy="menu",cascade=CascadeType.ALL)
 	private List<OrderItems> orderItems;
@@ -40,10 +40,10 @@ public class Menu {
 		
 	}
 	
-	public Menu(int menuid, String itemname, String description, double price, String type, String image, String info) {
+	public Menu(int menuId, String itemName, String description, double price, String type, String image, String info) {
 		super();
-		this.menuid = menuid;
-		this.itemname = itemname;
+		this.menuId = menuId;
+		this.itemName = itemName;
 		this.description = description;
 		this.price = price;
 		this.type = type;
@@ -51,12 +51,12 @@ public class Menu {
 		this.info = info;
 	}
 
-	public Menu(int menuid, String itemname, String description, double price, String type, String image, String info,
+	public Menu(int menuId, String itemName, String description, double price, String type, String image, String info,
 			MenuCategories menuCategory, Restaurant restaurant, List<OrderItems> orderItems,
 			List<CartItems> cartItems) {
 		super();
-		this.menuid = menuid;
-		this.itemname = itemname;
+		this.menuId = menuId;
+		this.itemName = itemName;
 		this.description = description;
 		this.price = price;
 		this.type = type;
@@ -68,20 +68,20 @@ public class Menu {
 		this.cartItems = cartItems;
 	}
 
-	public int getMenuid() {
-		return menuid;
+	public int getMenuId() {
+		return menuId;
 	}
 
-	public void setMenuid(int menuid) {
-		this.menuid = menuid;
+	public void setMenuId(int menuId) {
+		this.menuId = menuId;
 	}
 
-	public String getItemname() {
-		return itemname;
+	public String getItemName() {
+		return itemName;
 	}
 
-	public void setItemname(String itemname) {
-		this.itemname = itemname;
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public String getDescription() {

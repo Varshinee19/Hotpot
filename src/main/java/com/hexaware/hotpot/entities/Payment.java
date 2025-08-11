@@ -6,24 +6,24 @@ import jakarta.persistence.*;
 public class Payment {
 
 	@Id
-	private int paymentid;
+	private int paymentId;
 	private double amount;
 	private String mode;
 	private String status;
 	@OneToOne
 	@JoinColumn(name="orderid")
 	private Orders order;
-	public Payment(int paymentid, double amount, String mode, String status) {
+	public Payment(int paymentId, double amount, String mode, String status) {
 		super();
-		this.paymentid = paymentid;
+		this.paymentId = paymentId;
 		this.amount = amount;
 		this.mode = mode;
 		this.status = status;
 	}
 
-	public Payment(int paymentid, double amount, String mode, String status, Orders order) {
+	public Payment(int paymentId, double amount, String mode, String status, Orders order) {
 		super();
-		this.paymentid = paymentid;
+		this.paymentId = paymentId;
 		this.amount = amount;
 		this.mode = mode;
 		this.status = status;
@@ -31,11 +31,11 @@ public class Payment {
 	}
 
 	public int getPaymentid() {
-		return paymentid;
+		return paymentId;
 	}
 
 	public void setPaymentid(int paymentid) {
-		this.paymentid = paymentid;
+		this.paymentId = paymentid;
 	}
 
 	public double getAmount() {

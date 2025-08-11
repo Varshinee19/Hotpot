@@ -7,42 +7,45 @@ public class OrderItems {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int oid;
+	private int orderItemId;
+	private String itemName;
 	private int quantity;
 	private double price;
 	
 	@ManyToOne
-	@JoinColumn(name="orderid")
+	@JoinColumn(name="orderId")
 	private Orders order;
 	
     @ManyToOne
-	@JoinColumn(name="menuid")
+	@JoinColumn(name="menuId")
 	private Menu menu;
     
     public OrderItems() {
     	
     }
-	public OrderItems(int oid, int quantity, double price) {
+	public OrderItems(int orderItemId,String itemName ,int quantity, double price) {
 		super();
-		this.oid = oid;
+		this.orderItemId = orderItemId;
 		this.quantity = quantity;
 		this.price = price;
+		this.itemName=itemName;
 	}
 
-	public OrderItems(int oid, int quantity, double price, Orders order, Menu menu) {
+	public OrderItems(int orderItemId, int quantity, double price, Orders order, Menu menu) {
 		super();
-		this.oid = oid;
+		this.orderItemId = orderItemId;
 		this.quantity = quantity;
 		this.price = price;
 		this.order = order;
 		this.menu = menu;
 	}
-	public int getOid() {
-		return oid;
+	public int getOrderItemId() {
+		return orderItemId;
 	}
-	public void setOid(int oid) {
-		this.oid = oid;
+	public void setOrderItemId(int orderItemId) {
+		this.orderItemId = orderItemId;
 	}
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -67,6 +70,13 @@ public class OrderItems {
 	public void setMenu(Menu menu) {
 		this.menu = menu;
 	}
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
 	
 
 	

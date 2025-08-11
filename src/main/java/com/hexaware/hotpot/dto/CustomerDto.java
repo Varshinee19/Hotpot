@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CustomerDto {
-
+	
+    private int customerId;
 	@NotNull
 	@NotBlank(message="name is mandatory")
 	private String name;

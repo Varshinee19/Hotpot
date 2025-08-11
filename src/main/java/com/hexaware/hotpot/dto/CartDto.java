@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class CartDto {
 	@NotNull
-	private int custid;
+	private int cartId;
+	private int customerId;
 	
 
 }

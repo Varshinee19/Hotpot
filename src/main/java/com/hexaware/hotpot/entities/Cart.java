@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class Cart {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int cartid;
+	private int cartId;
 	@OneToOne
 	@JoinColumn(name="custid")
 	private Customer customer;
@@ -18,17 +18,17 @@ public class Cart {
 	public Cart() {
 		
 	}
-	public Cart(int cartid, Customer customer, List<CartItems> cartItems) {
+	public Cart(int cartId, Customer customer, List<CartItems> cartItems) {
 		super();
-		this.cartid = cartid;
+		this.cartId = cartId;
 		this.customer = customer;
 		this.cartItems = cartItems;
 	}
 	public int getCartid() {
-		return cartid;
+		return cartId;
 	}
 	public void setCartid(int cartid) {
-		this.cartid = cartid;
+		this.cartId = cartid;
 	}
 	public Customer getCustomer() {
 		return customer;

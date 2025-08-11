@@ -9,10 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class OrdersDto {
+	private int orderId;
 	@NotNull
-	private double totalprice;
+	private double totalPrice;
 	@NotEmpty(message="Delivery Address cannot be empty")
-	private String deladdress;
+	private String deliveryAddress;
 	@NotBlank
 	private String status;
 

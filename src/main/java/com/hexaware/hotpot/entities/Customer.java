@@ -18,8 +18,9 @@ import jakarta.persistence.OneToOne;
 public class Customer {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int custid;
+	private int customerId;
 	private String name;
+	private String gender;
 	private String email;
 	private String phone;
 	private String address;
@@ -35,34 +36,37 @@ public class Customer {
 		
 	}
 	
-	public Customer(int custid, String name, String email, String phone, String address,Role role) {
+	public Customer(int customerId,String gender, String name, String email, String phone, String address,Role role) {
 		super();
-		this.custid = custid;
+		this.customerId = customerId;
 		this.name = name;
+		this.gender=gender;
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
 		this.role=role;
 	}
 
-	public Customer(int custid, String name, String email, String phone, String address, Cart cart,
+	public Customer(int customerId, String name,String gender ,String email, String phone, String address,Role role,Cart cart,
 			List<Orders> orders) {
 		super();
-		this.custid = custid;
+		this.customerId = customerId;
 		this.name = name;
+		this.gender=gender;
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
+		this.role=role;
 		this.cart = cart;
 		this.orders = orders;
 	}
 
-	public int getCustid() {
-		return custid;
+	public int getCustomerId() {
+		return customerId;
 	}
 
-	public void setCustid(int custid) {
-		this.custid = custid;
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 
 	public String getName() {
@@ -72,6 +76,14 @@ public class Customer {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 
 	public String getEmail() {
 		return email;
@@ -123,9 +135,12 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer [custid=" + custid + ", name=" + name + ", email=" + email + ", phone=" + phone + ", address="
+		return "Customer [custid=" + customerId + ", name=" + name + ", email=" + email + ", phone=" + phone + ", address="
 				+ address + ", role=" + role + "]";
 	}
+
+
+	
 
 
 
