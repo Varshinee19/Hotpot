@@ -2,6 +2,9 @@ package com.hexaware.hotpot.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,12 +26,15 @@ public class Orders {
 	
 	@ManyToOne
 	@JoinColumn(name="customerId")
+	@JsonBackReference
 	private Customer customer;
 	
 	@ManyToOne
 	@JoinColumn(name="restaurantId")
+	@JsonBackReference
 	private Restaurant restaurant;
 	@OneToMany(mappedBy="order",cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private List<OrderItems> orderItems;
 	public Orders() {
 		

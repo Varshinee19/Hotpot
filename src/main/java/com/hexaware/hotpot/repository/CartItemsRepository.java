@@ -11,7 +11,7 @@ import com.hexaware.hotpot.entities.CartItems;
 @Repository
 public interface CartItemsRepository extends JpaRepository<CartItems,Integer> {
 	
-	public List<CartItems> findByCartId(int cartid);
+	public List<CartItems> findByCartCartId(int cartid);
 	@Modifying
 	@Query("Update CartItems c set c.quantity=?1 where c.cartItemId=?2")
 	public int updateQuantity(int quantity,int cartItemId);

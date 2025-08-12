@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hexaware.hotpot.dto.CustomerDto;
 import com.hexaware.hotpot.entities.Customer;
 import com.hexaware.hotpot.entities.Orders;
+import com.hexaware.hotpot.exception.CustomerAlreadyExistsException;
 import com.hexaware.hotpot.exception.CustomerNotFoundException;
+import com.hexaware.hotpot.exception.DuplicateEmailException;
 import com.hexaware.hotpot.service.ICustomerService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -24,24 +28,24 @@ public class CustomerRestController {
 	@Autowired
 	ICustomerService service;
 	@PostMapping("/add")
-	public Customer addCustomer(@RequestBody CustomerDto dto) {
+	public Customer addCustomer(@Valid @RequestBody CustomerDto dto) throws CustomerAlreadyExistsException, DuplicateEmailException {
 		return service.addCustomer(dto);
 		
 	}
 	@PutMapping("/update/{customerId}")
-	public Customer updateCustomer(@PathVariable Integer customerId,@RequestBody CustomerDto dto) throws CustomerNotFoundException {
+	public Customer updateCustomer(@Valid @PathVariable Integer customerId,@RequestBody CustomerDto dto) throws CustomerNotFoundException {
 		return service.updateCustomer(customerId,dto);
 	}
 	@DeleteMapping("/delete/{customerId}")
-	public String deleteCustomer(@PathVariable Integer customerId) {
+	public String deleteCustomer(@PathVariable Integer customerId) throws CustomerNotFoundException {
 		return service.deleteCustomerById(customerId);
 	}
 	@GetMapping("/getbyemail/{email}")
-	public Customer getByEmail(@PathVariable String email) {
+	public Customer getByEmail(@PathVariable String email) throws CustomerNotFoundException {
 		return service.getCustomerByMail(email);
 	}
-	@GetMapping("/getbyid/{customerID}")
-	public Customer getByEmail(@PathVariable Integer customerId) throws CustomerNotFoundException {
+	@GetMapping("/getbyid/{customerId}")
+	public Customer getById(@PathVariable Integer customerId) throws CustomerNotFoundException {
 		return service.getById(customerId);
 	}
 	

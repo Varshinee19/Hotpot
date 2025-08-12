@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hexaware.hotpot.dto.MenuDto;
 import com.hexaware.hotpot.entities.Menu;
-
+import com.hexaware.hotpot.exception.CategoryDoesNotExistException;
+import com.hexaware.hotpot.exception.MenuNotFoundException;
+import com.hexaware.hotpot.exception.RestaurantNotFoundException;
 import com.hexaware.hotpot.service.IMenuService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/menu")
@@ -24,23 +28,23 @@ public class MenuController {
 	IMenuService service;
 	
 	@PostMapping("/add")
-	public Menu addMenu(@RequestBody MenuDto dto) {
+	public Menu addMenu(@Valid @RequestBody MenuDto dto) throws RestaurantNotFoundException, CategoryDoesNotExistException {
 		return service.addMenuItem(dto);
 	}
 	@PutMapping("/update/{menuId}")
-	public Menu updateMenu(@PathVariable Integer menuId,MenuDto dto) {
+	public Menu updateMenu(@Valid @PathVariable Integer menuId,MenuDto dto) throws MenuNotFoundException {
 		return service.updateMenu(menuId,dto);
 	}
 	@GetMapping("/getbyrest/{restaurantId}")
-	public List<Menu> getByRestaurant(@PathVariable Integer restaurantId){
+	public List<Menu> getByRestaurant(@PathVariable Integer restaurantId) throws RestaurantNotFoundException{
 		return service.getMenuByRestaurant(restaurantId);
 	}
 	@GetMapping("/getbycategory/{categoryId}")
-	public List<Menu> getByRestaurant(@PathVariable int categoryId){
+	public List<Menu> getByRestaurant(@PathVariable int categoryId) throws RestaurantNotFoundException{
 		return service.getMenuByRestaurant(categoryId);
 	}
 	@DeleteMapping("/delete/{menuId}")
-	public String deleteMenu(@PathVariable Integer menuId) {
+	public String deleteMenu(@PathVariable Integer menuId) throws MenuNotFoundException {
 		return service.deleteMenuItem(menuId);
 	}
 	@GetMapping("/getall")
@@ -48,7 +52,7 @@ public class MenuController {
 		return service.getAllMenu();
 	}
 	@GetMapping("/getbyid/{menuId}")
-	public Menu getById(@PathVariable Integer menuId){
+	public Menu getById(@PathVariable Integer menuId)throws MenuNotFoundException{
 		return service.getById(menuId);
 	}
 	

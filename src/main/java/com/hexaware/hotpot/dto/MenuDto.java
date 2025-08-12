@@ -1,5 +1,7 @@
 package com.hexaware.hotpot.dto;
 
+import com.hexaware.hotpot.entities.Restaurant;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -22,5 +24,8 @@ public class MenuDto {
 	private String image;
 	@NotBlank
 	private String info;
+	private int restaurantId;
+	private int categoryId;
+
 
 }

@@ -17,6 +17,9 @@ public class CustomerDto {
 	@NotNull
 	@NotBlank(message="name is mandatory")
 	private String name;
+	@NotNull
+	@Pattern(regexp="^(Male|Female|Other)$")
+	private String gender;
 	@Email
 	private String email;
 	@Pattern(regexp="[0-9]{10}")

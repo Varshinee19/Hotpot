@@ -10,7 +10,7 @@ import com.hexaware.hotpot.entities.OrderItems;
 
 @Repository
 public interface OrderItemsRepository extends JpaRepository<OrderItems,Integer>{
-	public List<OrderItems> findByOrderId(int orderId);
+	public List<OrderItems> findByOrderOrderId(int orderId);
 	
 
 }

@@ -1,5 +1,5 @@
 package com.hexaware.hotpot.exception;
 
-public class CustomerAlreadyExistsException {
+public class CustomerAlreadyExistsException extends Exception {
 
 }

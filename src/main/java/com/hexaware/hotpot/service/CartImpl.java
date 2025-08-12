@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.hexaware.hotpot.entities.Cart;
 import com.hexaware.hotpot.entities.Customer;
+import com.hexaware.hotpot.exception.CartAlreadyExistsException;
+import com.hexaware.hotpot.exception.CartDoesNotExistException;
+import com.hexaware.hotpot.exception.CustomerNotFoundException;
 import com.hexaware.hotpot.repository.CartRepository;
 import com.hexaware.hotpot.repository.CustomerRepository;
 @Service
@@ -17,24 +20,32 @@ public class CartImpl implements ICartService {
 	CustomerRepository customerRepo;
 
 	@Override
-	public Cart createCart(int customerId) {
+	public Cart createCart(int customerId) throws CartAlreadyExistsException, CustomerNotFoundException {
 		// TODO Auto-generated method stub
-		Customer customer=customerRepo.findById(customerId).orElse(null);
+		Customer customer=customerRepo.findById(customerId).orElseThrow(()->new CustomerNotFoundException("Customer not found with ID "+customerId));
+		if(!(customer.getCart()==null)) {
+			throw new CartAlreadyExistsException();
+		}
 		Cart cart=new Cart();
 		cart.setCustomer(customer);
 		return repo.save(cart);
 	}
 
 	@Override
-	public Cart getCartById(int cartId) {
+	public Cart getCartById(int cartId) throws CartDoesNotExistException {
 		// TODO Auto-generated method stub
-		return repo.findById(cartId).orElse(null);
+		return repo.findById(cartId).orElseThrow(()->new CartDoesNotExistException());
 	}
 
 	@Override
-	public String clearCart(int cartid) {
-		// TODO Auto-generated method stub
-		repo.deleteById(cartid);
+	public String clearCart(int cartId) throws CartDoesNotExistException {
+		Cart cart=repo.findById(cartId).orElseThrow(()->new CartDoesNotExistException());
+	    Customer customer = cart.getCustomer();
+	    if (customer != null) {
+	        customer.setCart(null);
+	        customerRepo.save(customer);
+	    }
+		repo.deleteById(cartId);
 		return "Cart deleted";
 	}
 

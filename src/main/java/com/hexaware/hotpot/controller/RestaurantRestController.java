@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hexaware.hotpot.dto.RestaurantDto;
 import com.hexaware.hotpot.entities.Restaurant;
+import com.hexaware.hotpot.exception.RestaurantAlreadyExistsException;
+import com.hexaware.hotpot.exception.RestaurantNotFoundException;
 import com.hexaware.hotpot.service.IRestaurantService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/restaurant")
@@ -22,16 +26,16 @@ public class RestaurantRestController{
 	@Autowired
 	IRestaurantService service;
 	@PostMapping("/add")
-	public Restaurant addRestaurant(@RequestBody RestaurantDto dto) {
+	public Restaurant addRestaurant(@Valid @RequestBody RestaurantDto dto) throws RestaurantAlreadyExistsException {
 		return service.addRestaurant(dto);
 	}
 	@PutMapping("/update/{restaurantId}")
-	public Restaurant updateRestaurant(@PathVariable Integer restaurantId,@RequestBody RestaurantDto dto) {
+	public Restaurant updateRestaurant(@Valid @PathVariable Integer restaurantId,@RequestBody RestaurantDto dto) throws RestaurantNotFoundException {
 		return service.updateRestaurant(restaurantId,dto);
 		
 	}
 	@DeleteMapping("/delete/{restaurantId}")
-	public String getByRestaurant(@PathVariable Integer restaurantId) {
+	public String getByRestaurant(@PathVariable Integer restaurantId) throws RestaurantNotFoundException {
 		service.deleteRestaurant(restaurantId);
 		return "Record Deleted successfully";
 	}
@@ -40,7 +44,7 @@ public class RestaurantRestController{
 		return service.getAllRestaurant();
 	}
 	@GetMapping("/getbyid/{restaurantId}")
-	public Restaurant getById(@PathVariable Integer restaurantId){
+	public Restaurant getById(@PathVariable Integer restaurantId) throws RestaurantNotFoundException{
 		return service.getById(restaurantId);
 	}
 	

@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hexaware.hotpot.dto.OrderItemsDto;
-
 import com.hexaware.hotpot.entities.OrderItems;
+import com.hexaware.hotpot.exception.OrderItemNotAvailableException;
+import com.hexaware.hotpot.exception.OrderNotExistException;
 import com.hexaware.hotpot.service.IOrderItemService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/orderitems")
@@ -23,23 +26,23 @@ public class OrderItemsRestController {
 	@Autowired
 	IOrderItemService service;
 	@PostMapping("/add")
-	public OrderItems addOrderItem(@RequestBody OrderItemsDto dto) {
+	public OrderItems addOrderItem(@Valid @RequestBody OrderItemsDto dto) {
 		return service.addItem(dto);
 	}
 	@GetMapping("/getbyorder/{orderId}")
-	public List<OrderItems> getByOrder(@PathVariable Integer orderId){
+	public List<OrderItems> getByOrder(@PathVariable Integer orderId) throws OrderNotExistException{
 		return service.getItemsByOrder(orderId);
 	}
 	@PutMapping("/update/{orderItemId}")
-	public OrderItems updateOrder(@PathVariable Integer orderItemId,@RequestBody OrderItemsDto dto) {
+	public OrderItems updateOrder(@Valid @PathVariable Integer orderItemId,@RequestBody OrderItemsDto dto) throws OrderItemNotAvailableException {
 		return service.updateItem(orderItemId,dto);
 	}
 	@GetMapping("/getbyid/{orderItemId}")
-	public OrderItems getById(@PathVariable Integer orderItemId){
+	public OrderItems getById(@PathVariable Integer orderItemId) throws OrderItemNotAvailableException{
 		return service.getById(orderItemId);
 	}
 	@DeleteMapping("/delete/{orderItemId}")
-	public String deleteItem(@PathVariable Integer orderItemId) {
+	public String deleteItem(@PathVariable Integer orderItemId) throws OrderItemNotAvailableException {
 		service.removeItem(orderItemId);
 		return "Item removed successfully";
 	}

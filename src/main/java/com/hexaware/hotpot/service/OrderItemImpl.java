@@ -9,6 +9,8 @@ import com.hexaware.hotpot.dto.OrderItemsDto;
 import com.hexaware.hotpot.entities.Menu;
 import com.hexaware.hotpot.entities.OrderItems;
 import com.hexaware.hotpot.entities.Orders;
+import com.hexaware.hotpot.exception.OrderItemNotAvailableException;
+import com.hexaware.hotpot.exception.OrderNotExistException;
 import com.hexaware.hotpot.repository.MenuRepository;
 import com.hexaware.hotpot.repository.OrderItemsRepository;
 import com.hexaware.hotpot.repository.OrdersRepository;
@@ -35,14 +37,15 @@ public class OrderItemImpl implements IOrderItemService{
 	}
 
 	@Override
-	public List<OrderItems> getItemsByOrder(int orderId) {
-		
-		return repo.findByOrderId(orderId);
+	public List<OrderItems> getItemsByOrder(int orderId)throws OrderNotExistException {
+	orderRepo.findById(orderId).orElseThrow(()->new OrderNotExistException());
+
+		return repo.findByOrderOrderId(orderId);
 	}
 
 	@Override
-	public OrderItems updateItem(Integer OrderItemId,OrderItemsDto orderItem) {
-		OrderItems order=repo.findById(OrderItemId).orElse(null);
+	public OrderItems updateItem(Integer OrderItemId,OrderItemsDto orderItem)throws OrderItemNotAvailableException {
+		OrderItems order=repo.findById(OrderItemId).orElseThrow(()->new OrderItemNotAvailableException());
 		order.setItemName(orderItem.getItemName());
 	    order.setQuantity(orderItem.getQuantity());
 	    order.setPrice(orderItem.getPrice());
@@ -50,19 +53,18 @@ public class OrderItemImpl implements IOrderItemService{
 	    
 	}
 	@Override
-	public OrderItems getById(int orderItemId) {
+	public OrderItems getById(int orderItemId) throws OrderItemNotAvailableException {
 		
-		return repo.findById(orderItemId).orElse(null);
+		return repo.findById(orderItemId).orElseThrow(()->new OrderItemNotAvailableException());
 	}
 
 
 	@Override
-	public String removeItem(int orderItemId) {
-		// TODO Auto-generated method stub
+	public String removeItem(int orderItemId) throws OrderItemNotAvailableException {
+		repo.findById(orderItemId).orElseThrow(()->new OrderItemNotAvailableException());
 		repo.deleteById(orderItemId);
 		return "deleted successfully";
 	}
-
 
 
 

@@ -1,8 +1,18 @@
 package com.hexaware.hotpot.entities;
 
-import java.util.*;
+import java.util.List;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Cart {
@@ -11,8 +21,10 @@ public class Cart {
 	private int cartId;
 	@OneToOne
 	@JoinColumn(name="custid")
+	@JsonBackReference
 	private Customer customer;
 	@OneToMany(mappedBy="cart",cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private List<CartItems> cartItems;
 	
 	public Cart() {
@@ -24,10 +36,10 @@ public class Cart {
 		this.customer = customer;
 		this.cartItems = cartItems;
 	}
-	public int getCartid() {
+	public int getCartId() {
 		return cartId;
 	}
-	public void setCartid(int cartid) {
+	public void setCartId(int cartid) {
 		this.cartId = cartid;
 	}
 	public Customer getCustomer() {

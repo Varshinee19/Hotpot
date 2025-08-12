@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.hexaware.hotpot.dto.MenuCategoriesDto;
 import com.hexaware.hotpot.entities.MenuCategories;
+import com.hexaware.hotpot.exception.CategoryDoesNotExistException;
 import com.hexaware.hotpot.repository.MenuCategoriesRepository;
 @Service
 public class MenuCategoryImpl implements IMenuCategoryService {
@@ -24,16 +25,16 @@ public class MenuCategoryImpl implements IMenuCategoryService {
 	}
 
 	@Override
-	public MenuCategories updateCategory(Integer categoryId,MenuCategoriesDto category) {
+	public MenuCategories updateCategory(Integer categoryId,MenuCategoriesDto category)throws CategoryDoesNotExistException{
 		// TODO Auto-generated method stub
 		MenuCategories categories=repo.findById(categoryId).orElse(null);
 		categories.setCategoryName(category.getCategoryName());
 		return repo.save(categories);
 	}
 	@Override
-	public MenuCategories getById(int categoryId) {
+	public MenuCategories getById(int categoryId)throws CategoryDoesNotExistException {
 		// TODO Auto-generated method stub
-		return repo.findById(categoryId).orElse(null);
+		return repo.findById(categoryId).orElseThrow(()->new CategoryDoesNotExistException());
 	}
 
 
@@ -44,8 +45,9 @@ public class MenuCategoryImpl implements IMenuCategoryService {
 	}
 
 	@Override
-	public String deleteCategory(int categoryId) {
-		// TODO Auto-generated method stub
+	public String deleteCategory(int categoryId) throws CategoryDoesNotExistException {
+		
+		repo.findById(categoryId).orElseThrow(()->new CategoryDoesNotExistException());
 		repo.deleteById(categoryId);
 		return "record deleted";
 	}

@@ -1,8 +1,15 @@
 package com.hexaware.hotpot.entities;
 
-import java.util.*;
+import java.util.List;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 @Entity
 public class MenuCategories {
 
@@ -11,6 +18,7 @@ public class MenuCategories {
 	private int categoryId;
 	private String categoryName;
 	@OneToMany(mappedBy="menuCategory",cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private List<Menu> menus;
 	public MenuCategories() {
 		

@@ -9,6 +9,8 @@ import com.hexaware.hotpot.dto.CartItemDto;
 import com.hexaware.hotpot.entities.Cart;
 import com.hexaware.hotpot.entities.CartItems;
 import com.hexaware.hotpot.entities.Menu;
+import com.hexaware.hotpot.exception.CartDoesNotExistException;
+import com.hexaware.hotpot.exception.CartItemNotFoundException;
 import com.hexaware.hotpot.repository.CartItemsRepository;
 import com.hexaware.hotpot.repository.CartRepository;
 import com.hexaware.hotpot.repository.MenuRepository;
@@ -22,11 +24,10 @@ public class CartItemImpl implements ICartItemService {
     @Autowired
     MenuRepository menuRepo;
 	@Override
-	public CartItems addItem(CartItemDto cartItem) {
-		Cart cart = cartRepo.findById(cartItem.getCartId()).orElse(null);
-		Menu menu=menuRepo.findById(cartItem.getMenuId()).orElse(null);
+	public CartItems addItem(CartItemDto cartItem) throws CartDoesNotExistException {
+		Cart cart = cartRepo.findById(cartItem.getCartId()).orElseThrow(()->new  CartDoesNotExistException());
+		Menu menu=menuRepo.findById(cartItem.getMenuId()).orElseThrow(()->new RuntimeException("Menu Not Found"));
 		CartItems item=new CartItems();
-	    
 		item.setQuantity(cartItem.getQuantity());	
 		item.setCart(cart);
 		item.setMenu(menu);
@@ -36,31 +37,32 @@ public class CartItemImpl implements ICartItemService {
 	}
 
 	@Override
-	public List<CartItems> getItemsInCart(int cartid) {
+	public List<CartItems> getItemsInCart(int cartId) throws CartDoesNotExistException {
 		// TODO Auto-generated method stub
-		return repo.findByCartId(cartid);
+		cartRepo.findById(cartId).orElseThrow(()->new CartDoesNotExistException());
+		return repo.findByCartCartId(cartId);
 	}
 
 	
-	public String updateItemQuantity(int quantity,int cartitemid) {
-		int updated=repo.updateQuantity(quantity, cartitemid);
+	public String updateItemQuantity(int quantity,int cartItemId) {
+		int updated=repo.updateQuantity(quantity, cartItemId);
 		return updated > 0 ? "Updated successfully" : "Cart Item not found";
 		
 		
 	}
 
 	@Override
-	public String removeItem(int cartitemid) {
-		// TODO Auto-generated method stub
-		repo.deleteById(cartitemid);
+	public String removeItem(int cartItemId)throws CartItemNotFoundException  {
+		repo.findById(cartItemId).orElseThrow(()->new CartItemNotFoundException());
+		repo.deleteById(cartItemId);
 		return "Cart Item removed";
 		
 	}
 
 	@Override
-	public CartItems getById(int cartId) {
-		// TODO Auto-generated method stub
-		return repo.findById(cartId).orElse(null);
+	public CartItems getById(int cartItemId)throws CartItemNotFoundException  {
+		
+		return repo.findById(cartItemId).orElseThrow(()->new CartItemNotFoundException());
 	}
 
 

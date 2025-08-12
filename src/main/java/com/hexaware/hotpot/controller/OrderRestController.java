@@ -14,27 +14,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hexaware.hotpot.dto.OrdersDto;
 import com.hexaware.hotpot.entities.Orders;
+import com.hexaware.hotpot.exception.CustomerNotFoundException;
+import com.hexaware.hotpot.exception.OrderNotExistException;
+import com.hexaware.hotpot.exception.RestaurantNotFoundException;
 import com.hexaware.hotpot.service.IOrderService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/order")
 public class OrderRestController {
 	@Autowired
 	IOrderService service;
-	@PostMapping("/add")
-	public Orders addOrder(@RequestBody OrdersDto dto) {
-		return service.placeOrder(dto);
+	@PostMapping("/add/{customerId}")
+	public Orders addOrder(@Valid @PathVariable Integer customerId, @RequestBody OrdersDto dto) {
+		return service.placeOrder(customerId,dto);
 	}
 	@PutMapping("/update/{orderId}")
-	public Orders updateOrder(@PathVariable Integer orderId,@RequestBody OrdersDto dto) {
+	public Orders updateOrder(@Valid @PathVariable Integer orderId,@RequestBody OrdersDto dto) throws OrderNotExistException {
 		return service.updateOrder(orderId,dto);
 	}
-	@GetMapping("/getbycustomer/{Integer customerId}")
-	public List<Orders> getOrdersByCust(@PathVariable Integer customerId){
+	@GetMapping("/getbycustomer/{customerId}")
+	public List<Orders> getOrdersByCust(@PathVariable Integer customerId) throws CustomerNotFoundException{
 		return service.getOrdersByCustomer(customerId);
 	}
-	@GetMapping("/getbyrestaurant/{Integer restaurantId}")
-	public List<Orders> getOrdersByRest(@PathVariable Integer restaurantId){
+	@GetMapping("/getbyrestaurant/{restaurantId}")
+	public List<Orders> getOrdersByRest(@PathVariable Integer restaurantId) throws RestaurantNotFoundException{
 		return service.getOrdersByRestaurant(restaurantId);
 	}
 	@GetMapping("/getby")
@@ -42,15 +47,15 @@ public class OrderRestController {
 		return service.getAll();
 	}
 	@GetMapping("/getbyid/{orderId}")
-	public Orders getById(@PathVariable Integer orderId){
+	public Orders getById(@PathVariable Integer orderId) throws OrderNotExistException{
 		return service.getById(orderId);
 	}
-	@PutMapping("updatestatus/{status/{orderId}")
-	public Orders updateStatus(@PathVariable String status,@PathVariable Integer orderId) {
+	@PutMapping("updatestatus/{status}/{orderId}")
+	public String updateStatus(@Valid @PathVariable String status,@PathVariable Integer orderId) {
 		return service.updateOrderStatus(status, orderId);
 	}
 	@DeleteMapping("/delete/{orderId}")
-	public String deleteOrder(@PathVariable Integer orderId) {
+	public String deleteOrder(@PathVariable Integer orderId) throws OrderNotExistException {
 		return service.cancelOrder(orderId);
 		
 	}

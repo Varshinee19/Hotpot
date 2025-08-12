@@ -1,83 +1,122 @@
 package com.hexaware.hotpot.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hexaware.hotpot.dto.OrdersDto;
+import com.hexaware.hotpot.entities.Cart;
+import com.hexaware.hotpot.entities.CartItems;
+import com.hexaware.hotpot.entities.Customer;
+import com.hexaware.hotpot.entities.OrderItems;
 import com.hexaware.hotpot.entities.Orders;
+import com.hexaware.hotpot.exception.CustomerNotFoundException;
+import com.hexaware.hotpot.exception.OrderNotExistException;
+import com.hexaware.hotpot.exception.RestaurantNotFoundException;
+import com.hexaware.hotpot.repository.CartItemsRepository;
+import com.hexaware.hotpot.repository.CartRepository;
+import com.hexaware.hotpot.repository.CustomerRepository;
+import com.hexaware.hotpot.repository.OrderItemsRepository;
 import com.hexaware.hotpot.repository.OrdersRepository;
+import com.hexaware.hotpot.repository.RestaurantRepository;
+
 @Service
 public class OrderImpl implements IOrderService {
 	@Autowired
 	OrdersRepository repo;
+	@Autowired
+	CustomerRepository custRepo;
+	@Autowired
+	CartItemsRepository cartRepo;
+	@Autowired
+	OrderItemsRepository itemRepo;
+	@Autowired
+	CartRepository cRepo;
+	@Autowired
+	RestaurantRepository rRepo;
 
 	@Override
-	public Orders placeOrder(OrdersDto dto) {
-		// TODO Auto-generated method stub
-		Orders order=readData(dto);
-		return repo.save(order);
+	public Orders placeOrder(int customerId, OrdersDto dto) {
+		Customer customer = custRepo.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found"));
+		Cart cart = customer.getCart();
+		List<CartItems> cartItems = cartRepo.findByCartCartId(cart.getCartId());
+		double totalPrice = cartItems.stream().mapToDouble(ci -> ci.getMenu().getPrice() * ci.getQuantity()).sum();
+		Orders order = new Orders();
+		order.setCustomer(customer);
+		order.setDeliveryAddress(dto.getDeliveryAddress());
+		order.setTotalPrice(totalPrice);
+		order.setStatus(dto.getStatus());
+		order.setRestaurant(cartItems.get(0).getMenu().getRestaurant());
+		order = repo.save(order);
+		List<OrderItems> savedOrderItems = new ArrayList<>();
+		for (CartItems ci : cartItems) {
+			OrderItems orderItem = new OrderItems(); 
+			orderItem.setOrder(order); 
+			orderItem.setMenu(ci.getMenu());
+			orderItem.setItemName(ci.getMenu().getItemName());
+			orderItem.setQuantity(ci.getQuantity()); 
+			orderItem.setPrice(ci.getMenu().getPrice()); 
+			itemRepo.save(orderItem);
+			savedOrderItems.add(orderItem);
+		}
+		cartItems.forEach(item -> cartRepo.delete(item));
+		return order;
 	}
 
 	@Override
-	public Orders updateOrder(Integer orderId,OrdersDto dto) {
+	public Orders updateOrder(Integer orderId, OrdersDto dto) throws OrderNotExistException{
 		// TODO Auto-generated method stub
-	
-	    Optional<Orders> findOrder=repo.findById(orderId);
-	    Orders ord=findOrder.get();
-	    ord.setTotalPrice(dto.getTotalPrice());
-	    ord.setDeliveryAddress(dto.getDeliveryAddress());
-	    ord.setStatus(dto.getStatus());
-	    return repo.save(ord);
+
+		Orders ord = repo.findById(orderId).orElseThrow(()->new OrderNotExistException());
+		ord.setTotalPrice(dto.getTotalPrice());
+		ord.setDeliveryAddress(dto.getDeliveryAddress());
+		ord.setStatus(dto.getStatus());
+		return repo.save(ord);
 	}
 
 	@Override
-	public List<Orders> getOrdersByCustomer(int customerId) {
+	public List<Orders> getOrdersByCustomer(int customerId) throws CustomerNotFoundException {
 		// TODO Auto-generated method stub
-		return repo.findByCustomer(customerId);
+		custRepo.findById(customerId).orElseThrow(()-> new CustomerNotFoundException("Customer not found with id "+customerId));
+		return repo.findByCustomerCustomerId(customerId);
 	}
 
 	@Override
-	public List<Orders> getOrdersByRestaurant(int restaurantId) {
-		// TODO Auto-generated method stub
-		return repo.findByRestaurant(restaurantId);
+	public List<Orders> getOrdersByRestaurant(int restaurantId) throws RestaurantNotFoundException {
+		rRepo.findById(restaurantId).orElseThrow(()->new RestaurantNotFoundException("Restaurant Not Found"));
+		return repo.findByRestaurantRestaurantId(restaurantId);
 	}
 
 	@Override
-	public Orders updateOrderStatus(String status,int orderId) {
+	public String updateOrderStatus(String status, int orderId) {
 		// TODO Auto-generated method stub
-		return repo.updateOrderStatus(status, orderId);
+		 int update=repo.updateOrderStatus(status, orderId);
+		 if(update>=1)
+			 return "Updated successfully";
+		 return "Update unsuccesfull";
 	}
 
 	@Override
-	public String cancelOrder(int orderId) {
-		
+	public String cancelOrder(int orderId) throws OrderNotExistException{
+		repo.findById(orderId).orElseThrow(()->new OrderNotExistException());
 		repo.deleteById(orderId);
 		return "Order cancelled";
 	}
+
 	@Override
 	public List<Orders> getAll() {
 		// TODO Auto-generated method stub
 		return repo.findAll();
 	}
-	public Orders readData(OrdersDto dto) {
-		Orders order=new Orders();
-		order.setTotalPrice(dto.getTotalPrice());
-		order.setDeliveryAddress(dto.getDeliveryAddress());
-		order.setStatus(dto.getStatus());
-		return order;
-		
-		
-	}
+
 
 	@Override
-	public Orders getById(int orderId) {
+	public Orders getById(int orderId) throws OrderNotExistException {
+		
 		// TODO Auto-generated method stub
-		return repo.findById(orderId).orElse(null);
+		return repo.findById(orderId).orElseThrow(()->new OrderNotExistException());
 	}
-
-
 
 }

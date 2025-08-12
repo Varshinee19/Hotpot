@@ -13,12 +13,12 @@ import com.hexaware.hotpot.entities.Orders;
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders,Integer>{
 	
-	public List<Orders> findByCustomer(int custid);
-	public List<Orders> findByRestaurant(int resid);
+	public List<Orders> findByCustomerCustomerId(int custid);
+	public List<Orders> findByRestaurantRestaurantId(int resid);
 	@Modifying
 	@Transactional
-	@Query(value="Update o set o.status=?:1 from Orders o where orderId=?:2")
-	public Orders updateOrderStatus(String status,int orderId);
+	@Query("UPDATE Orders o SET o.status = ?1 WHERE o.orderId = ?2")
+	public int updateOrderStatus(String status,int orderId);
 	
 
 
