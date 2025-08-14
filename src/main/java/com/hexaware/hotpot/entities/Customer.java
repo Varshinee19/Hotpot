@@ -1,6 +1,7 @@
 /*
  * Customer.java
  * auth: Varshinee K
+ * modified date:01-08-25
  * Represents the users of the app.
  */
 

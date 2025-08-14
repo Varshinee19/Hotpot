@@ -34,7 +34,7 @@ public class CartRestController {
 	ICartService service;
 	@PreAuthorize("hasRole('CUSTOMER')")
 	@PostMapping("/add/{customerId}")
-	public Cart createCart(@Valid @PathVariable Integer customerId,@RequestBody CartDto dto) throws CartAlreadyExistsException, CustomerNotFoundException {
+	public Cart createCart(@Valid @PathVariable Integer customerId) throws CartAlreadyExistsException, CustomerNotFoundException {
 		return service.createCart(customerId);
 	}
 	@PreAuthorize("hasRole('CUSTOMER')")
