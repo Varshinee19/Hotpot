@@ -1,8 +1,10 @@
+/*
+ * Cart Items.java
+ * auth: Varshinee K
+ * Represents cart item creation and mappings.
+ */
+
 package com.hexaware.hotpot.entities;
-
-
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,3 +1,9 @@
+/*
+ * Cart.java
+ * auth: Varshinee K
+ * Represents cart creation and mappings.
+ */
+
 package com.hexaware.hotpot.entities;
 
 import java.util.List;

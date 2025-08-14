@@ -72,7 +72,7 @@ class CartItemServiceImplTest {
         Assertions.assertEquals(cart.getCartId(), saved.getCart().getCartId());
     }
 
-    // 2️⃣ getItemsInCart
+   
     @Test
     void testGetItemsInCart() throws CartDoesNotExistException {
         cartItemService.addItem(cartItemDto);
@@ -80,7 +80,7 @@ class CartItemServiceImplTest {
         Assertions.assertEquals(1, items.size());
     }
 
-    // 3️⃣ updateItemQuantity
+    
     @Test
     void testUpdateItemQuantity() throws CartDoesNotExistException {
         CartItems saved = cartItemService.addItem(cartItemDto);

@@ -1,3 +1,8 @@
+/*
+ * Orders.java
+ * Author: Varshinee K
+ * Represents orders in the system and links them to users and order items.
+ */
 package com.hexaware.hotpot.entities;
 
 import java.util.List;

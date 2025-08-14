@@ -1,7 +1,9 @@
+/*
+ * OrderItems.java
+ * Author: Varshinee K
+ * Represents individual items within an order and links them to orders and menu items.
+ */
 package com.hexaware.hotpot.entities;
-
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;

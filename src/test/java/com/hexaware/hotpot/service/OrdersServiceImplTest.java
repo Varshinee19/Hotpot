@@ -67,12 +67,12 @@ class OrdersServiceImplTest {
         category.setCategoryName("Lunch");
         catRepo.save(category);
 
-        // Create restaurant
+       
         restaurant = new Restaurant();
         restaurant.setRestaurantName("Test Restaurant");
         rRepo.save(restaurant);
 
-        // Create menu item
+        
         menuItem = new Menu();
         menuItem.setItemName("Burger");
         menuItem.setType("Veg");

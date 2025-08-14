@@ -1,5 +1,10 @@
 package com.hexaware.hotpot.entities;
 
+/*
+ * Menu.java
+ * auth: Varshinee
+ * Represents Restaurant creation and mappings.
+ */
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

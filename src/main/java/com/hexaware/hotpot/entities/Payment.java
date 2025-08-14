@@ -1,3 +1,9 @@
+/*
+ * Payment.java
+ * Author: Varshinee K
+ * Represents payment details for an order and links each payment to its order.
+ */
+
 package com.hexaware.hotpot.entities;
 
 import jakarta.persistence.*;

@@ -1,5 +1,9 @@
 package com.hexaware.hotpot.repository;
-
+/*
+ * 
+ * auth: Varshinee
+ * Repository Class.
+ */
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,5 +1,9 @@
 package com.hexaware.hotpot.service;
-
+/*
+ * 
+ * auth: Varshinee
+ * Service Interface Class.
+ */
 import java.util.List;
 
 import com.hexaware.hotpot.dto.CartItemDto;

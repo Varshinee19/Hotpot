@@ -1,7 +1,10 @@
+/*
+ * Menu.java
+ * auth: Varshinee
+ * Represents Menu creation and mappings.
+ */
+
 package com.hexaware.hotpot.entities;
-
-
-
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

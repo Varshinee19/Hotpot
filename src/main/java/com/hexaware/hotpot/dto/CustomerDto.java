@@ -1,3 +1,8 @@
+/*
+ * 
+ * auth: Varshinee
+ * DTO class for validation.
+ */
 package com.hexaware.hotpot.dto;
 
 import com.hexaware.hotpot.entitiesenum.Role;

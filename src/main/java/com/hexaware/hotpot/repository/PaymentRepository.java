@@ -1,5 +1,9 @@
 package com.hexaware.hotpot.repository;
-
+/*
+ * 
+ * auth: Varshinee
+ * Repository Class.
+ */
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.hexaware.hotpot.entities.Payment;

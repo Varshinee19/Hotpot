@@ -1,3 +1,8 @@
+/*
+ * Menu.java
+ * auth: Varshinee
+ * Represents Menu categories creation and mappings.
+ */
 package com.hexaware.hotpot.entities;
 
 import java.util.List;

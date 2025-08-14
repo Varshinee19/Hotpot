@@ -63,14 +63,14 @@ class OrderItemsServiceImplTest {
         category.setCategoryName("Lunch");
         catRepo.save(category);
 
-        // ----------------- Create Restaurant -----------------
+        
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantName("Test Resto");
         restaurant.setRestaurantAddress("123 St");
         restaurant.setPhoneNo("1234567890");
         rRepo.save(restaurant);
 
-        // ----------------- Create Menu -----------------
+        
         Menu menu = new Menu();
         menu.setItemName("Burger");
         menu.setPrice(100);
@@ -78,7 +78,7 @@ class OrderItemsServiceImplTest {
         menu.setMenuCategory(category);
         menuRepo.save(menu);
 
-        // ----------------- Create Customer and Cart -----------------
+        
         Customer customer = new Customer();
         customer.setName("John Doe");
         custRepo.save(customer);
@@ -115,14 +115,14 @@ class OrderItemsServiceImplTest {
 
         order.getOrderItems().add(item);
 
-        // Calculate total price
+        
         double total = order.getOrderItems().stream()
                 .mapToDouble(i -> i.getPrice() * i.getQuantity()).sum();
         order.setTotalPrice(total);
 
-        // Save Order (cascade ALL can save OrderItems automatically)
+        
         orderRepo.save(order);
-        repo.save(item); // optional if cascade ALL is not set
+        repo.save(item); 
 
         return order;
     }

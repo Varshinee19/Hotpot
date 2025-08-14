@@ -1,3 +1,11 @@
+/*
+ * OrderServiceImpl.java
+ * Auth: Varshinee K
+ *
+ *
+ * Implements business logic related to orders.
+
+ */
 package com.hexaware.hotpot.service;
 
 import java.util.ArrayList;

@@ -1,3 +1,9 @@
+/*
+ * Customer.java
+ * auth: Varshinee K
+ * Represents the users of the app.
+ */
+
 package com.hexaware.hotpot.entities;
 
 import java.util.List;
