@@ -1,57 +1,121 @@
 package com.hexaware.hotpot.service;
 
 
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.hexaware.hotpot.dto.RestaurantDto;
 import com.hexaware.hotpot.entities.Restaurant;
+import com.hexaware.hotpot.repository.RestaurantRepository;
 
+import jakarta.transaction.Transactional;
+@SpringBootTest
+@Transactional
 class RestaurantServiceImplTest {
-	@Autowired
-	RestTemplate rest;
+    @Autowired
+    private IRestaurantService restaurantService;
 
+    @Autowired
+    private RestaurantRepository repo;
 
-	@Test
-	void addRestaurant() {
-		RestaurantDto dto=new RestaurantDto();
-		dto.setRestaurantName("Bhavyam");
-		dto.setPhoneNo("78693032132");
-		dto.setRestaurantAddress("Kotturpuram Main Road 2nd cross street");
-		ResponseEntity<RestaurantDto> response=rest.postForEntity("http://localhost:8080/api/restaurant/add", dto, RestaurantDto.class);
-		RestaurantDto restaurant=response.getBody();
-		Assertions.assertNotNull(restaurant);
-		
-	}
-	@Test
-	void updateRestaurant() {
-		RestaurantDto dto=new RestaurantDto();
-		dto.setRestaurantName("bhavyam hotel");
-		dto.setPhoneNo("78693032132");
-		dto.setRestaurantAddress("Kotturpuram Main Road 2nd cross street");
-		rest.put("http://localhost:8080/api/restaurant/update/1,",dto);
-		ResponseEntity<RestaurantDto>response=rest.getForEntity("http://localhost:8080/api/restaurant/getbyid/1", RestaurantDto.class);
-		Assertions.assertEquals("bhavyam hotel",response.getBody().getRestaurantName());
-	}
-	@Test
-	void getRestaurant() {
-		ResponseEntity<Restaurant[]>response=rest.getForEntity("http://localhost:8080/api/restaurant/get", Restaurant[].class);
-		Assertions.assertTrue(response.getBody().length>0);
-	}
-	@Test
-	void testgetbyid() {
-		ResponseEntity<Restaurant[]>response=rest.getForEntity("http://localhost:8080/api/restaurant/get/4", Restaurant[].class);
-		Assertions.assertNotNull(response.getBody());
-	}
-	@Test
-	void deleteRestaurant() {
-	rest.delete("http://localhost:8080/api/restaurant/delete/1");
-	ResponseEntity<RestaurantDto>response=rest.getForEntity("http://localhost:8080/api/restaurant/getbyid/1", RestaurantDto.class);
-	Assertions.assertNull(response.getBody());
-	
-	}
+    @Test
+    void testAddRestaurant() throws Exception {
+        RestaurantDto restaurantDto = new RestaurantDto();
+        restaurantDto.setRestaurantName("Test Resto");
+        restaurantDto.setRestaurantAddress("123 Main St");
+        restaurantDto.setPhoneNo("1234567890");
 
+        Restaurant restaurant = restaurantService.addRestaurant(restaurantDto);
+
+        Assertions.assertNotNull(restaurant.getRestaurantId());
+        Assertions.assertEquals("Test Resto", restaurant.getRestaurantName());
+    }
+
+    @Test
+    void testUpdateRestaurant() throws Exception {
+        RestaurantDto restaurantDto = new RestaurantDto();
+        restaurantDto.setRestaurantName("Test Resto");
+        restaurantDto.setRestaurantAddress("123 Main St");
+        restaurantDto.setPhoneNo("1234567890");
+
+        Restaurant restaurant = restaurantService.addRestaurant(restaurantDto);
+
+        RestaurantDto updateDto = new RestaurantDto();
+        updateDto.setRestaurantName("Updated Resto");
+        updateDto.setRestaurantAddress("456 New St");
+        updateDto.setPhoneNo("9876543210");
+
+        Restaurant updated = restaurantService.updateRestaurant(restaurant.getRestaurantId(), updateDto);
+
+        Assertions.assertEquals("Updated Resto", updated.getRestaurantName());
+        Assertions.assertEquals("456 New St", updated.getRestaurantAddress());
+        Assertions.assertEquals("9876543210", updated.getPhoneNo());
+    }
+
+    @Test
+    void testGetById() throws Exception {
+        RestaurantDto restaurantDto = new RestaurantDto();
+        restaurantDto.setRestaurantName("Test Resto");
+        restaurantDto.setRestaurantAddress("123 Main St");
+        restaurantDto.setPhoneNo("1234567890");
+
+        Restaurant restaurant = restaurantService.addRestaurant(restaurantDto);
+
+        Restaurant found = restaurantService.getById(restaurant.getRestaurantId());
+
+        Assertions.assertEquals(restaurant.getRestaurantId(), found.getRestaurantId());
+        Assertions.assertEquals("Test Resto", found.getRestaurantName());
+    }
+
+    @Test
+    void testGetRestaurantByName() throws Exception {
+        RestaurantDto restaurantDto = new RestaurantDto();
+        restaurantDto.setRestaurantName("Test Resto");
+        restaurantDto.setRestaurantAddress("123 Main St");
+        restaurantDto.setPhoneNo("1234567890");
+
+        restaurantService.addRestaurant(restaurantDto);
+
+        Restaurant found = restaurantService.getRestaurantByName("Test Resto");
+
+        Assertions.assertEquals("Test Resto", found.getRestaurantName());
+    }
+
+    @Test
+    void testDeleteRestaurant() throws Exception {
+    	repo.deleteAll();
+        RestaurantDto restaurantDto = new RestaurantDto();
+        restaurantDto.setRestaurantName("Test Resto");
+        restaurantDto.setRestaurantAddress("123 Main St");
+        restaurantDto.setPhoneNo("1234567890");
+
+        Restaurant restaurant = restaurantService.addRestaurant(restaurantDto);
+
+        String result = restaurantService.deleteRestaurant(restaurant.getRestaurantId());
+        Assertions.assertEquals("restaurant deleted successfully", result);
+
+        List<Restaurant> all = restaurantService.getAllRestaurant();
+        Assertions.assertEquals(0, all.size());
+    }
+
+    @Test
+    void testGetAllRestaurant() throws Exception {
+    	repo.deleteAll();
+        RestaurantDto restaurantDto = new RestaurantDto();
+        restaurantDto.setRestaurantName("Test Resto");
+        restaurantDto.setRestaurantAddress("123 Main St");
+        restaurantDto.setPhoneNo("1234567890");
+
+        restaurantService.addRestaurant(restaurantDto);
+
+        List<Restaurant> all = restaurantService.getAllRestaurant();
+        Assertions.assertEquals(1, all.size());
+        Assertions.assertEquals("Test Resto", all.get(0).getRestaurantName());
+    }
 }
+
+

@@ -44,6 +44,7 @@ public class MenuImpl implements IMenuService {
 	    menus.setRestaurant(restaurant);
 	    menus.setMenuCategory(category);
 		return repo.save(menus);
+		
 	}
 
 	@Override
@@ -96,5 +97,6 @@ public class MenuImpl implements IMenuService {
 		// TODO Auto-generated method stub
 		return repo.findById(menuId).orElseThrow(() -> new MenuNotFoundException());
 	}
+	
 
 }

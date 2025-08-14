@@ -1,6 +1,7 @@
 package com.hexaware.hotpot.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +19,9 @@ public class CartItems {
 	private int quantity;
 	@ManyToOne
 	@JoinColumn(name="cartId")
-	@JsonBackReference
 	private Cart cart;
 	@ManyToOne
 	@JoinColumn(name="menuId")
-	@JsonBackReference
 	private Menu menu;
 	
 	public CartItems() {

@@ -18,7 +18,7 @@ public class CustomerUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Optional<Customer>customer=repo.findByEmail(email);
-		return customer.map(CustomerUserDetails::new).orElseThrow(() -> new UsernameNotFoundException("customer not found "));
+		return customer.map(CustomerUserDetails::new).orElseThrow(() -> new UsernameNotFoundException("user not found "));
 
 	}
    

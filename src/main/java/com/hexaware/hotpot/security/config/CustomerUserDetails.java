@@ -21,7 +21,9 @@ public class CustomerUserDetails implements UserDetails{
     public CustomerUserDetails(Customer customer) {
         this.email = customer.getEmail();
         this.password = customer.getPassword();
-        authorities= Collections.singletonList(new SimpleGrantedAuthority(customer.getRole().name()));
+        authorities= Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + customer.getRole().name().toUpperCase()));
+        System.out.println("User: " + customer.getEmail() + ", Role: " + customer.getRole());
+        System.out.println("Authorities: " + authorities);
                        
     }
 

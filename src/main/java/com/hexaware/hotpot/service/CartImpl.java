@@ -1,5 +1,7 @@
 package com.hexaware.hotpot.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +49,12 @@ public class CartImpl implements ICartService {
 	    }
 		repo.deleteById(cartId);
 		return "Cart deleted";
+	}
+
+	@Override
+	public List<Cart> getAll() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
 	}
 
 }

@@ -4,8 +4,7 @@ package com.hexaware.hotpot.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -29,18 +28,19 @@ public class Menu {
 	private String image;
 	private String info;
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="categoryId")
-	@JsonBackReference
+
 	private MenuCategories menuCategory;
 	@ManyToOne
 	@JoinColumn(name="restaurantId")
-	@JsonBackReference
+    @JsonIgnore
 	private Restaurant restaurant;
 	@OneToMany(mappedBy="menu",cascade=CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<OrderItems> orderItems;
 	@OneToMany(mappedBy="menu",cascade=CascadeType.ALL)
-	@JsonManagedReference
+    @JsonIgnore
 	private List<CartItems> cartItems;
 	
 	public Menu() {
@@ -162,7 +162,15 @@ public class Menu {
 	public void setCartItems(List<CartItems> cartItems) {
 		this.cartItems = cartItems;
 	}
+    public int getRestaurantId() {
+        return restaurant != null ? restaurant.getRestaurantId() : 0;
+    }
+    
+    public int getCategoryId() {
+        return menuCategory != null ? menuCategory.getCategoryId() : 0;
+    }
 	
+
 
 	
 

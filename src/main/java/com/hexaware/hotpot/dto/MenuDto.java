@@ -1,11 +1,10 @@
 package com.hexaware.hotpot.dto;
 
-import com.hexaware.hotpot.entities.Restaurant;
-
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @NoArgsConstructor
@@ -20,6 +19,7 @@ public class MenuDto {
 	@Min(value=1)
 	private double price;
 	@NotNull(message="Specify type(Veg/Non-Veg)")
+	@Pattern(regexp="^(veg|non-veg)$")
 	private String type;
 	private String image;
 	@NotBlank

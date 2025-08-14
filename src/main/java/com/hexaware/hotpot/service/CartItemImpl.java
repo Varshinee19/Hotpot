@@ -15,6 +15,8 @@ import com.hexaware.hotpot.repository.CartItemsRepository;
 import com.hexaware.hotpot.repository.CartRepository;
 import com.hexaware.hotpot.repository.MenuRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CartItemImpl implements ICartItemService {
     @Autowired
@@ -43,7 +45,7 @@ public class CartItemImpl implements ICartItemService {
 		return repo.findByCartCartId(cartId);
 	}
 
-	
+	@Transactional
 	public String updateItemQuantity(int quantity,int cartItemId) {
 		int updated=repo.updateQuantity(quantity, cartItemId);
 		return updated > 0 ? "Updated successfully" : "Cart Item not found";

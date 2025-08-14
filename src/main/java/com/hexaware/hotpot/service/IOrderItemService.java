@@ -8,7 +8,7 @@ import com.hexaware.hotpot.exception.OrderItemNotAvailableException;
 import com.hexaware.hotpot.exception.OrderNotExistException;
 
 public interface IOrderItemService {
-	public OrderItems addItem(OrderItemsDto orderItem);
+	public OrderItems addItem(Integer orderId,OrderItemsDto orderItem)throws OrderNotExistException;
 	public List<OrderItems> getItemsByOrder(int orderId) throws OrderNotExistException;
 	public OrderItems updateItem(Integer orderItemId,OrderItemsDto orderItem) throws OrderItemNotAvailableException;
 	public OrderItems getById(int orderItemId)throws OrderItemNotAvailableException;

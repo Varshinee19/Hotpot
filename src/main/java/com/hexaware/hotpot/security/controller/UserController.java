@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +48,9 @@ public class UserController {
         String token = null;
 
         if (authentication.isAuthenticated()) {
-            token = jwtService.generateToken(authRequest.getEmail());
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            token = jwtService.generateToken(userDetails);
+            
             logger.info("Token generated: " + token);
         } else {
             logger.info("Invalid credentials");

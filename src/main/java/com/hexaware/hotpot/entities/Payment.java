@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 public class Payment {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int paymentId;
 	private double amount;
 	private String mode;
@@ -13,6 +14,9 @@ public class Payment {
 	@OneToOne
 	@JoinColumn(name="orderid")
 	private Orders order;
+	public Payment() {
+		
+	}
 	public Payment(int paymentId, double amount, String mode, String status) {
 		super();
 		this.paymentId = paymentId;

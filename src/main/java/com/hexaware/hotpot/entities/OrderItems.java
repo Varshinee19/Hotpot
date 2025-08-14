@@ -1,6 +1,8 @@
 package com.hexaware.hotpot.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,12 +23,12 @@ public class OrderItems {
 	
 	@ManyToOne
 	@JoinColumn(name="orderId")
-	@JsonBackReference
+    @JsonIgnore
 	private Orders order;
 	
     @ManyToOne
 	@JoinColumn(name="menuId")
-    @JsonBackReference
+    @JsonIgnore
 	private Menu menu;
     
     public OrderItems() {
@@ -85,6 +87,13 @@ public class OrderItems {
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
+    public int getOrderId() {
+        return order != null ? order.getOrderId() : 0;
+    }
+
+    public int getMenuId() {
+        return menu != null ? menu.getMenuId() : 0;
+    }
 
 	
 

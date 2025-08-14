@@ -3,6 +3,7 @@ package com.hexaware.hotpot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,31 +27,37 @@ import jakarta.validation.Valid;
 public class MenuController {
 	@Autowired
 	IMenuService service;
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/add")
 	public Menu addMenu(@Valid @RequestBody MenuDto dto) throws RestaurantNotFoundException, CategoryDoesNotExistException {
 		return service.addMenuItem(dto);
 	}
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/update/{menuId}")
 	public Menu updateMenu(@Valid @PathVariable Integer menuId,MenuDto dto) throws MenuNotFoundException {
 		return service.updateMenu(menuId,dto);
 	}
+	@PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
 	@GetMapping("/getbyrest/{restaurantId}")
 	public List<Menu> getByRestaurant(@PathVariable Integer restaurantId) throws RestaurantNotFoundException{
 		return service.getMenuByRestaurant(restaurantId);
 	}
+	 @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
 	@GetMapping("/getbycategory/{categoryId}")
 	public List<Menu> getByRestaurant(@PathVariable int categoryId) throws RestaurantNotFoundException{
 		return service.getMenuByRestaurant(categoryId);
 	}
+	 @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{menuId}")
 	public String deleteMenu(@PathVariable Integer menuId) throws MenuNotFoundException {
 		return service.deleteMenuItem(menuId);
 	}
+	@PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
 	@GetMapping("/getall")
 	public List<Menu> getAll(){
 		return service.getAllMenu();
 	}
+	@PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
 	@GetMapping("/getbyid/{menuId}")
 	public Menu getById(@PathVariable Integer menuId)throws MenuNotFoundException{
 		return service.getById(menuId);

@@ -3,9 +3,11 @@ package com.hexaware.hotpot.security.service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +35,15 @@ public class JwtService {
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public String generateToken(String username) {
-
-		Map<String, Object> claims = new HashMap<>();
-
-		return createToken(claims, username);
-
-	}
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        List<String> roles = userDetails.getAuthorities()
+                                        .stream()
+                                        .map(GrantedAuthority::getAuthority)
+                                        .toList();
+        claims.put("roles", roles);
+        return createToken(claims, userDetails.getUsername());
+    }
 	
 	private Claims extractAllClaims(String token) {
 
@@ -73,5 +77,9 @@ public class JwtService {
 	        final String username = extractUsername(token);
 	        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	    } 
+	    public List<String> extractRoles(String token) {
+	        Claims claims = extractAllClaims(token);
+	        return claims.get("roles", List.class);
+	    }
 
 }

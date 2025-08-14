@@ -2,7 +2,7 @@ package com.hexaware.hotpot.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -22,10 +22,10 @@ public class Restaurant {
 	private String restaurantAddress;
 	private String phoneNo;
 	@OneToMany(mappedBy="restaurant", cascade=CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<Menu> menuItems;
 	@OneToMany(mappedBy="restaurant",cascade=CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<Orders> orders;
 	
 	public Restaurant() {

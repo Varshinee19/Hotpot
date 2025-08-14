@@ -2,7 +2,7 @@ package com.hexaware.hotpot.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hexaware.hotpot.entitiesenum.Role;
 
 import jakarta.persistence.CascadeType;
@@ -29,10 +29,10 @@ public class Customer {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	@OneToOne(mappedBy="customer",cascade=CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private Cart cart;
 	@OneToMany(mappedBy="customer",cascade=CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<Orders> orders;
 	
 	

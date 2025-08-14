@@ -2,8 +2,7 @@ package com.hexaware.hotpot.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -21,10 +20,10 @@ public class Cart {
 	private int cartId;
 	@OneToOne
 	@JoinColumn(name="custid")
-	@JsonBackReference
+	@JsonIgnore
 	private Customer customer;
 	@OneToMany(mappedBy="cart",cascade=CascadeType.ALL)
-	@JsonManagedReference
+	@JsonIgnore
 	private List<CartItems> cartItems;
 	
 	public Cart() {
@@ -54,6 +53,9 @@ public class Cart {
 	public void setCartItems(List<CartItems> cartItems) {
 		this.cartItems = cartItems;
 	}
+    public int getCustomerId() {
+        return customer != null ? customer.getCustomerId() : 0;
+    }
 	
 	
 	

@@ -8,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.hexaware.hotpot.dto.CartDto;
 
+import jakarta.transaction.Transactional;
+@Transactional
 class CartServiceImplTest {
 	@Autowired
 	RestTemplate rest;

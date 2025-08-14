@@ -15,7 +15,7 @@ public interface IOrderService {
 	public List<Orders> getOrdersByRestaurant(int restaurantId)throws RestaurantNotFoundException;
 	public List<Orders> getAll();
 	public Orders getById(int orderId)throws OrderNotExistException;
-	public String updateOrderStatus(String Status,int orderId);
+	public String updateOrderStatus(String Status,int orderId) throws OrderNotExistException;
 	public String cancelOrder(int orderId)throws OrderNotExistException;
 
 }

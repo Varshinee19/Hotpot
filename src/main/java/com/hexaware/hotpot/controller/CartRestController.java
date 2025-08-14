@@ -2,7 +2,10 @@ package com.hexaware.hotpot.controller;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,19 +28,28 @@ import jakarta.validation.Valid;
 public class CartRestController {
 	@Autowired
 	ICartService service;
+	@PreAuthorize("hasRole('CUSTOMER')")
 	@PostMapping("/add/{customerId}")
 	public Cart createCart(@Valid @PathVariable Integer customerId,@RequestBody CartDto dto) throws CartAlreadyExistsException, CustomerNotFoundException {
 		return service.createCart(customerId);
 	}
+	@PreAuthorize("hasRole('CUSTOMER')")
 	@GetMapping("get/{cartId}")
 	public Cart getCartById(@PathVariable Integer cartId) throws CartDoesNotExistException{
 		return service.getCartById(cartId);
 	}
+	@PreAuthorize("hasRole('CUSTOMER')")
+	@GetMapping("/get")
+	public List<Cart>getAll(){
+		return service.getAll();
+	}
+	@PreAuthorize("hasRole('CUSTOMER')")
 	@DeleteMapping("delete/{cartId}")
 	public String deleteCart(@PathVariable Integer cartId) throws CartDoesNotExistException {
 		service.clearCart(cartId);
 		return "Cart deleted";
 	}
+	
 	
 
 }

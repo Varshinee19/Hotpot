@@ -3,6 +3,7 @@ package com.hexaware.hotpot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,22 +26,27 @@ import jakarta.validation.Valid;
 public class OrderItemsRestController {
 	@Autowired
 	IOrderItemService service;
-	@PostMapping("/add")
-	public OrderItems addOrderItem(@Valid @RequestBody OrderItemsDto dto) {
-		return service.addItem(dto);
+	@PreAuthorize("hasRole('CUSTOMER')")
+	@PostMapping("/add/{orderId}")
+	public OrderItems addOrderItem(@Valid @PathVariable Integer orderId,@RequestBody OrderItemsDto dto) throws OrderNotExistException {
+		return service.addItem(orderId, dto);
 	}
+	@PreAuthorize("hasRole('CUSTOMER')")
 	@GetMapping("/getbyorder/{orderId}")
 	public List<OrderItems> getByOrder(@PathVariable Integer orderId) throws OrderNotExistException{
 		return service.getItemsByOrder(orderId);
 	}
+	@PreAuthorize("hasRole('CUSTOMER')or hasRole('ADMIN')")
 	@PutMapping("/update/{orderItemId}")
 	public OrderItems updateOrder(@Valid @PathVariable Integer orderItemId,@RequestBody OrderItemsDto dto) throws OrderItemNotAvailableException {
 		return service.updateItem(orderItemId,dto);
 	}
+	 @PreAuthorize("hasRole('CUSTOMER')")
 	@GetMapping("/getbyid/{orderItemId}")
 	public OrderItems getById(@PathVariable Integer orderItemId) throws OrderItemNotAvailableException{
 		return service.getById(orderItemId);
 	}
+	 @PreAuthorize("hasRole('CUSTOMER')or hasRole('ADMIN')")
 	@DeleteMapping("/delete/{orderItemId}")
 	public String deleteItem(@PathVariable Integer orderItemId) throws OrderItemNotAvailableException {
 		service.removeItem(orderItemId);

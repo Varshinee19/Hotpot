@@ -1,9 +1,11 @@
 package com.hexaware.hotpot.security.filter;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,14 +21,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter{
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
+    private final CustomerUserDetailsService userDetailsService;
 
-    @Autowired
-    private CustomerUserDetailsService userDetailsService;
+    public JwtAuthFilter(JwtService jwtService, CustomerUserDetailsService userDetailsService) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+    }
 
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        // Skip login & registration
+        if (path.equals("/users/login/authenticate") || path.equals("/users/registration/new")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
         String token = null;
@@ -41,8 +56,13 @@ public class JwtAuthFilter extends OncePerRequestFilter{
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
             if (jwtService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = 
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                // ✅ Extract roles from JWT
+                List<SimpleGrantedAuthority> authorities = jwtService.extractRoles(token).stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -50,7 +70,7 @@ public class JwtAuthFilter extends OncePerRequestFilter{
         }
 
         filterChain.doFilter(request, response);
-    }
-}
+	    }
+	}
 
 

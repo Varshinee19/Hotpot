@@ -36,6 +36,8 @@ public class OrderImpl implements IOrderService {
 	CartRepository cRepo;
 	@Autowired
 	RestaurantRepository rRepo;
+	@Autowired
+	INotificationService notify;
 
 	@Override
 	public Orders placeOrder(int customerId, OrdersDto dto) {
@@ -61,6 +63,7 @@ public class OrderImpl implements IOrderService {
 			itemRepo.save(orderItem);
 			savedOrderItems.add(orderItem);
 		}
+		notify.sendNotification(customerId,"Your order has been placed successfully");
 		cartItems.forEach(item -> cartRepo.delete(item));
 		return order;
 	}
@@ -68,7 +71,6 @@ public class OrderImpl implements IOrderService {
 	@Override
 	public Orders updateOrder(Integer orderId, OrdersDto dto) throws OrderNotExistException{
 		// TODO Auto-generated method stub
-
 		Orders ord = repo.findById(orderId).orElseThrow(()->new OrderNotExistException());
 		ord.setTotalPrice(dto.getTotalPrice());
 		ord.setDeliveryAddress(dto.getDeliveryAddress());
@@ -90,12 +92,15 @@ public class OrderImpl implements IOrderService {
 	}
 
 	@Override
-	public String updateOrderStatus(String status, int orderId) {
-		// TODO Auto-generated method stub
-		 int update=repo.updateOrderStatus(status, orderId);
-		 if(update>=1)
-			 return "Updated successfully";
-		 return "Update unsuccesfull";
+	public String updateOrderStatus(String status, int orderId)throws OrderNotExistException {
+	    Orders order = repo.findById(orderId).orElseThrow(() -> new OrderNotExistException());
+	    order.setStatus(status);
+	    repo.save(order);
+
+	    notify.sendNotification(order.getCustomer().getCustomerId(),
+	            "Your order" + orderId + " status has been updated to: " + status);
+
+	    return "Updated successfully";
 	}
 
 	@Override
@@ -110,7 +115,6 @@ public class OrderImpl implements IOrderService {
 		// TODO Auto-generated method stub
 		return repo.findAll();
 	}
-
 
 	@Override
 	public Orders getById(int orderId) throws OrderNotExistException {
